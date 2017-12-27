@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May  7 20:53:07 2017
+
+@author: islipd
+"""
+import pandas as pd
+import numpy as np
+
+kpi = pd.read_excel('C:/Users/islipd/Documents/weatherhedge')
