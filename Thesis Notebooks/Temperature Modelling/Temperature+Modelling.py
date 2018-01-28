@@ -46,7 +46,7 @@ T.index = pd.to_datetime(T["Date"])
 T.drop(T.index[T.index.dayofyear == 366],axis=0, inplace = True)
 T.drop("Date", axis = 1, inplace = True)
 #T.plot(subplots = True, fontsize = 8,layout = (4,3))
-T["Buttonville A"].plot()
+#T["Buttonville A"].plot()
 
 
 # ### 1. Regression to obtain $m(t)$
@@ -98,14 +98,14 @@ for i in range(10):
 
 L = pd.DataFrame(L)
 L = L/L.max(axis=0)
-cm = plt.get_cmap('gist_rainbow')
-NUM_COLORS = 2*N+2
-
-ax = L.plot(title = "Lasso Regression - Factor Coefficients normalized by 0th-iteration factor values", color = [cm(1.*i/NUM_COLORS) for i in range(NUM_COLORS)])
-
-ax.set_xlabel("iteration No, lambda = iteration/10" )
-ax.set_ylabel("Normalized coefficient value" )
-L
+#cm = plt.get_cmap('gist_rainbow')
+#NUM_COLORS = 2*N+2
+#
+#ax = L.plot(title = "Lasso Regression - Factor Coefficients normalized by 0th-iteration factor values", color = [cm(1.*i/NUM_COLORS) for i in range(NUM_COLORS)])
+#
+#ax.set_xlabel("iteration No, lambda = iteration/10" )
+#ax.set_ylabel("Normalized coefficient value" )
+#L
 
 
 # In[33]:
@@ -119,7 +119,7 @@ Xs = X[cols]
 
 model = sm.OLS(y,Xs)
 results = model.fit()
-print(results.summary())
+#print(results.summary())
 
 
 # In[35]:
@@ -127,7 +127,7 @@ print(results.summary())
 Comparison = pd.DataFrame(results.predict(Xs))
 Comparison["Actual"] = y
 Comparison.rename(columns={Comparison.columns[0]: 'Predicted'}, inplace=True)
-Comparison.ix[len(y)-365:len(y)].plot(title = "Buttonville A. Temperature")
+#Comparison.ix[len(y)-365:len(y)].plot(title = "Buttonville A. Temperature")
 
 
 # ### 2. AR(1) Process for the Residuals
@@ -141,17 +141,17 @@ Comparison.ix[len(y)-365:len(y)].plot(title = "Buttonville A. Temperature")
 
 # In[16]:
 
-epsi = Comparison['Actual'] - Comparison['Predicted']
-epsi = np.array(epsi)
-epsi = np.expand_dims(epsi, axis=0)
-
-lag_ = 10  # number of lags (for auto correlation test)
-acf = autocorrelation(epsi, lag_)
-
-lag = 10 # lag to be printed
-ell_scale = 2  # ellipsoid radius coefficient
-fit = 0  # normal fitting
-InvarianceTestEllipsoid(epsi, acf[0,1:], lag, fit, ell_scale);
+#epsi = Comparison['Actual'] - Comparison['Predicted']
+#epsi = np.array(epsi)
+#epsi = np.expand_dims(epsi, axis=0)
+#
+#lag_ = 10  # number of lags (for auto correlation test)
+#acf = autocorrelation(epsi, lag_)
+#
+#lag = 10 # lag to be printed
+#ell_scale = 2  # ellipsoid radius coefficient
+#fit = 0  # normal fitting
+#InvarianceTestEllipsoid(epsi, acf[0,1:], lag, fit, ell_scale);
 
 
 # In[17]:
@@ -160,7 +160,7 @@ epsi = Comparison['Actual'] - Comparison['Predicted']
 epsi = np.array(epsi)
 model = sm.tsa.AR(epsi)
 AResults= model.fit(maxlag = 30, ic = "bic",method = 'cmle')
-print("The maximum number of required lags for the residuals above according to the Bayes Information Criterion is:")
+#print("The maximum number of required lags for the residuals above according to the Bayes Information Criterion is:")
 sm.tsa.AR(epsi).select_order(maxlag = 10, ic = 'bic',method='cmle')
 
 
@@ -168,33 +168,33 @@ sm.tsa.AR(epsi).select_order(maxlag = 10, ic = 'bic',method='cmle')
 
 ar_mod = sm.OLS(epsi[1:], epsi[:-1])
 ar_res = ar_mod.fit()
-print(ar_res.summary())
+#print(ar_res.summary())
 
 ep = ar_res.predict()
-print(len(ep),len(epsi))
+#print(len(ep),len(epsi))
 z = ep - epsi[1:]
 
-plt.plot(epsi[1:],  color='black')
-plt.plot(ep, color='blue',linewidth=3)
-plt.title('Residuals AR(1) Process')
-plt.ylabel(" ")
-plt.xlabel("Days")
-plt.legend()
+#plt.plot(epsi[1:],  color='black')
+#plt.plot(ep, color='blue',linewidth=3)
+#plt.title('Residuals AR(1) Process')
+#plt.ylabel(" ")
+#plt.xlabel("Days")
+#plt.legend()
 
 
 # #### 2.2 Invariance check for the residuals of the AR(1) process
 
 # In[19]:
 
-z = np.expand_dims(z, axis=0)
-
-lag_ = 10  # number of lags (for auto correlation test)
-acf = autocorrelation(z, lag_)
-
-lag = 10  # lag to be printed
-ell_scale = 2  # ellipsoid radius coefficient
-fit = 0  # normal fitting
-InvarianceTestEllipsoid(z, acf[0,1:], lag, fit, ell_scale);
+#z = np.expand_dims(z, axis=0)
+#
+#lag_ = 10  # number of lags (for auto correlation test)
+#acf = autocorrelation(z, lag_)
+#
+#lag = 10  # lag to be printed
+#ell_scale = 2  # ellipsoid radius coefficient
+#fit = 0  # normal fitting
+#InvarianceTestEllipsoid(z, acf[0,1:], lag, fit, ell_scale);
 
 
 # #### 2.3 As per Benth lets see what the residuals of the AR(1) process are doing...
@@ -202,7 +202,7 @@ InvarianceTestEllipsoid(z, acf[0,1:], lag, fit, ell_scale);
 # In[20]:
 
 z = ep - epsi[1:]
-plt.plot(z**2)
+#plt.plot(z**2)
 
 
 # ### 3. Modelling the Volatility Term: $\sigma^2(t) $
@@ -218,16 +218,15 @@ for i in range(10):
 
 
 # In[22]:
-
+#
 L = pd.DataFrame(L)
 L = L/L.max(axis=0)
-L.plot()
-L
+#L.plot()
+
 
 
 # In[25]:
 
-volcols
 
 
 # In[26]:
@@ -236,7 +235,7 @@ volcols = L.columns[L.ix[len(L)-1] > 0.001]
 Xvol = X[volcols].ix[1:]
 volmodel = sm.OLS(sigma,Xvol)
 VolResults = volmodel.fit()
-print(VolResults.summary())
+#print(VolResults.summary())
 
 
 # In[27]:
@@ -249,35 +248,35 @@ VolComparison.ix[0:720]['Predicted'].plot(title = "Buttonville Volatility Model"
 
 
 # In[28]:
-
-epsi = z/(VolResults.predict())**0.5
-epsi = np.expand_dims(epsi, axis=0)
-lag_ = 10  # number of lags (for auto correlation test)
-acf = autocorrelation(epsi, lag_)
-
-lag = 10  # lag to be printed
-ell_scale = 2  # ellipsoid radius coefficient
-fit = 0  # normal fitting
-InvarianceTestEllipsoid(epsi, acf[0,1:], lag, fit, ell_scale);
+#
+#epsi = z/(VolResults.predict())**0.5
+#epsi = np.expand_dims(epsi, axis=0)
+#lag_ = 10  # number of lags (for auto correlation test)
+#acf = autocorrelation(epsi, lag_)
+#
+#lag = 10  # lag to be printed
+#ell_scale = 2  # ellipsoid radius coefficient
+#fit = 0  # normal fitting
+#InvarianceTestEllipsoid(epsi, acf[0,1:], lag, fit, ell_scale);
 
 
 # In[29]:
+#
+## Fit a normal distribution to the data:
+#mu, std = norm.fit(epsi[0])
+#
+## Plot the histogram.
+#plt.hist(epsi[0], bins=25, normed=True, alpha=0.6, color='g')
+#
+## Plot the PDF.
+#xmin, xmax = plt.xlim()
+#x = np.linspace(xmin, xmax, 100)
+#p = norm.pdf(x, mu, std)
+#plt.plot(x, p, 'k', linewidth=2)
+#title = "Fit results: mu = %.2f,  std = %.2f" % (mu, std)
+#plt.title(title)
 
-# Fit a normal distribution to the data:
-mu, std = norm.fit(epsi[0])
-
-# Plot the histogram.
-plt.hist(epsi[0], bins=25, normed=True, alpha=0.6, color='g')
-
-# Plot the PDF.
-xmin, xmax = plt.xlim()
-x = np.linspace(xmin, xmax, 100)
-p = norm.pdf(x, mu, std)
-plt.plot(x, p, 'k', linewidth=2)
-title = "Fit results: mu = %.2f,  std = %.2f" % (mu, std)
-plt.title(title)
-
-plt.show()
+#plt.show()
 
 
 # ### 4. Monte Carlo Simulation
@@ -310,16 +309,16 @@ for i in range(sig_hat.shape[0]-1):
 
 Mean_Temp = np.expand_dims(results.predict(X_proj[:,cols]),axis=1)
 Temp_Paths = np.repeat(Mean_Temp,M,axis=1)+ AR
-plt.plot(Temp_Paths[:,0:3])
+#plt.plot(Temp_Paths[:,0:3])
 
 
 # In[26]:
-
-T_innov = pd.DataFrame(invariants)
-T_out = pd.DataFrame(Temp_Paths)
-T_out.index = np.arange(T.index[-1],T.index[-1] + dt.timedelta(tau),dt.timedelta(days=1)).astype(dt.datetime)
-T_innov.index = T_out.index
-T_out.to_pickle("C:\\Users\\islipd\\Documents\\Thesis Notebooks\\Tout.pkl")
-T_innov.to_pickle("C:\\Users\\islipd\\Documents\\Thesis Notebooks\\Tinnov.pkl")
-T_out.mean(axis = 1).plot()
+#
+#T_innov = pd.DataFrame(invariants)
+#T_out = pd.DataFrame(Temp_Paths)
+#T_out.index = np.arange(T.index[-1],T.index[-1] + dt.timedelta(tau),dt.timedelta(days=1)).astype(dt.datetime)
+#T_innov.index = T_out.index
+#T_out.to_pickle("C:\\Users\\islipd\\Documents\\Thesis Notebooks\\Tout.pkl")
+#T_innov.to_pickle("C:\\Users\\islipd\\Documents\\Thesis Notebooks\\Tinnov.pkl")
+#T_out.mean(axis = 1).plot()
 

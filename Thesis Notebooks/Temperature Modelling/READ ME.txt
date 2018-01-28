@@ -1,0 +1,30 @@
+Model#1 corresponds to 
+	m(t) = trunc fourier 
+	residuals = AR(1) 
+	volatility = trunc fourier 
+	random innnovatins = brownian
+Model#2 corresponds to 
+	m(t) = trunc fourier 
+	residuals = AR(1) 
+	volatility = trunc fourier 
+	random innnovations = fractional brownian
+Model#3 corresponds to 
+	m(t) = trunc fourier 
+	residuals = AR(3) 
+	volatility = trunc fourier 
+	random innnovations = brownian
+Model#4 corresponds to 
+	m(t) = trunc fourier 
+	residuals = AR(3) 
+	volatility = wavelet neural network 
+	random innnovations = brownian
+Model#5 corresponds to 
+	m(t) = trunc fourier 
+	residuals = AR(3) 
+	volatility = wavelet neural network 
+	random innnovations = brownian
+Model#6 corresponds to 
+	m(t) = trunc fourier 
+	residuals = AR(1) 
+	volatility = mean reverting levy process
+	random innnovations = brownian
